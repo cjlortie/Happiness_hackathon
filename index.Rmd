@@ -40,7 +40,7 @@ GDP <- GDP %>%
   rename(country = 'Country Name')
 
 GDP <- GDP %>%
-  pivot_longer(-country, names_to = "year", values_to = "GDP")
+  pivot_longer(-country, names_to = "year", values_to = "GDP", values_drop_na = TRUE)
 GDP
 
 

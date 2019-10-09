@@ -1,0 +1,30 @@
+---
+title: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Happiness hackathon
+cjlortie
+
+![](./mr-robot.jpg)
+
+```{r data, warning=FALSE, message=FALSE}
+library(tidyverse)
+#happiness
+happiness <- read_csv(url("https://ndownloader.figshare.com/files/17715713"))
+happiness
+
+#GDP
+GDP <- read_csv(url("https://ndownloader.figshare.com/files/17715722"))
+GDP
+
+#density
+pop <- read_csv(url("https://ndownloader.figshare.com/files/17715701"))
+pop
+
+```
+

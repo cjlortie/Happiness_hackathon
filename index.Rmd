@@ -31,6 +31,21 @@ pop
 cri <- read_csv(url("https://ndownloader.figshare.com/files/17715740"))
 cri
 
+#tidy up data
+#hpi OK
+
+#GDP needs to be longer
+GDP <- GDP %>%
+  select(-'Country Code') %>%
+  rename(country = 'Country Name')
+
+GDP <- GDP %>%
+  pivot_longer(-country, names_to = "year", values_to = "GDP")
+GDP
+
+
+
+
 ```
 
 

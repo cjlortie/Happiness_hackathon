@@ -460,6 +460,31 @@ cri</code></pre>
 ##  9  2012 Russia                        9 22.2 
 ## 10  2012 Nigeria                      10 22.3 
 ## # … with 444 more rows</code></pre>
+<pre class="r"><code>#tidy up data
+#hpi OK
+
+#GDP needs to be longer
+GDP &lt;- GDP %&gt;%
+  select(-'Country Code') %&gt;%
+  rename(country = 'Country Name')
+
+GDP &lt;- GDP %&gt;%
+  pivot_longer(-country, names_to = &quot;year&quot;, values_to = &quot;GDP&quot;)
+GDP</code></pre>
+<pre><code>## # A tibble: 15,048 x 3
+##    country year    GDP
+##    &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+##  1 Aruba   1960     NA
+##  2 Aruba   1961     NA
+##  3 Aruba   1962     NA
+##  4 Aruba   1963     NA
+##  5 Aruba   1964     NA
+##  6 Aruba   1965     NA
+##  7 Aruba   1966     NA
+##  8 Aruba   1967     NA
+##  9 Aruba   1968     NA
+## 10 Aruba   1969     NA
+## # … with 15,038 more rows</code></pre>
 </div>
 <div id="viz" class="section level3">
 <h3>Viz</h3>

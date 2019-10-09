@@ -461,13 +461,29 @@ cri</code></pre>
 ## 10  2012 Nigeria                      10 22.3 
 ## # … with 444 more rows</code></pre>
 <pre class="r"><code>#tidy up data
-#hpi OK
-
-#GDP needs to be longer
+#hpi
+happiness$year &lt;- as.character(happiness$year)
+happiness</code></pre>
+<pre><code>## # A tibble: 369 x 3
+##    country                            hpi year 
+##    &lt;chr&gt;                            &lt;dbl&gt; &lt;chr&gt;
+##  1 Vanuatu                           68.2 2006 
+##  2 Colombia                          67.2 2006 
+##  3 Costa Rica                        66   2006 
+##  4 Dominica                          64.6 2006 
+##  5 Panama                            63.5 2006 
+##  6 Cuba                              61.9 2006 
+##  7 Honduras                          61.8 2006 
+##  8 Guatemala                         61.7 2006 
+##  9 El Salvador                       61.7 2006 
+## 10 Saint Vincent and the Grenadines  61.4 2006 
+## # … with 359 more rows</code></pre>
+<pre class="r"><code>#GDP needs to be longer
 GDP &lt;- GDP %&gt;%
   select(-'Country Code') %&gt;%
   rename(country = 'Country Name')
 
+#reshape
 GDP &lt;- GDP %&gt;%
   pivot_longer(-country, names_to = &quot;year&quot;, values_to = &quot;GDP&quot;, values_drop_na = TRUE)
 GDP</code></pre>
@@ -485,6 +501,85 @@ GDP</code></pre>
 ##  9 Aruba   2002  1941094972
 ## 10 Aruba   2003  2021301676
 ## # … with 11,205 more rows</code></pre>
+<pre class="r"><code>GDP$year &lt;- as.character(GDP$year)
+GDP</code></pre>
+<pre><code>## # A tibble: 11,215 x 3
+##    country year         GDP
+##    &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
+##  1 Aruba   1994  1330167598
+##  2 Aruba   1995  1320670391
+##  3 Aruba   1996  1379888268
+##  4 Aruba   1997  1531843575
+##  5 Aruba   1998  1665363128
+##  6 Aruba   1999  1722798883
+##  7 Aruba   2000  1873452514
+##  8 Aruba   2001  1920262570
+##  9 Aruba   2002  1941094972
+## 10 Aruba   2003  2021301676
+## # … with 11,205 more rows</code></pre>
+<pre class="r"><code>#pop
+pop &lt;- pop %&gt;%
+  select(-'Country Code') %&gt;%
+  rename(country = 'Country Name')
+
+
+#reshape
+pop &lt;- pop %&gt;%
+  pivot_longer(-country, names_to = &quot;year&quot;, values_to = &quot;pop&quot;, values_drop_na = TRUE)
+pop$year &lt;- as.character(pop$year)
+pop</code></pre>
+<pre><code>## # A tibble: 14,110 x 3
+##    country year    pop
+##    &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+##  1 Aruba   1961   308.
+##  2 Aruba   1962   312.
+##  3 Aruba   1963   315.
+##  4 Aruba   1964   317.
+##  5 Aruba   1965   319.
+##  6 Aruba   1966   321.
+##  7 Aruba   1967   322.
+##  8 Aruba   1968   324.
+##  9 Aruba   1969   326.
+## 10 Aruba   1970   328.
+## # … with 14,100 more rows</code></pre>
+<pre class="r"><code>#cri
+cri$year &lt;- as.character(cri$year)
+cri &lt;- cri %&gt;%
+  select(-CRI.rank)
+cri</code></pre>
+<pre><code>## # A tibble: 454 x 3
+##    year  country                  CRI
+##    &lt;chr&gt; &lt;chr&gt;                  &lt;dbl&gt;
+##  1 2012  Haiti                   6.83
+##  2 2012  Philippines            10.3 
+##  3 2012  Pakistan               12.7 
+##  4 2012  Madagascar             15.7 
+##  5 2012  Fiji                   17   
+##  6 2012  Serbia                 17.7 
+##  7 2012  Samoa                  18.3 
+##  8 2012  Bosnia and Herzegovina 21.7 
+##  9 2012  Russia                 22.2 
+## 10 2012  Nigeria                22.3 
+## # … with 444 more rows</code></pre>
+<pre class="r"><code>#now join it all up
+data &lt;- left_join(happiness, GDP, by = c(&quot;country&quot;, &quot;year&quot;))
+data &lt;- left_join(data, pop, by = c(&quot;country&quot;, &quot;year&quot;))
+data &lt;- left_join(data, cri, by = c(&quot;country&quot;, &quot;year&quot;))
+data</code></pre>
+<pre><code>## # A tibble: 369 x 6
+##    country                            hpi year           GDP   pop   CRI
+##    &lt;chr&gt;                            &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Vanuatu                           68.2 2006     439376794  17.6    NA
+##  2 Colombia                          67.2 2006  162590146096  39.5    NA
+##  3 Costa Rica                        66   2006   22526463619  84.4    NA
+##  4 Dominica                          64.6 2006     390370370  94.3    NA
+##  5 Panama                            63.5 2006   18144936600  45.4    NA
+##  6 Cuba                              61.9 2006   52742100000 106.     NA
+##  7 Honduras                          61.8 2006   10841742348  62.6    NA
+##  8 Guatemala                         61.7 2006   30231249362 126.     NA
+##  9 El Salvador                       61.7 2006   18550700000 288.     NA
+## 10 Saint Vincent and the Grenadines  61.4 2006            NA  NA      NA
+## # … with 359 more rows</code></pre>
 </div>
 <div id="viz" class="section level3">
 <h3>Viz</h3>

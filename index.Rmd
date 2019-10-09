@@ -32,19 +32,45 @@ cri <- read_csv(url("https://ndownloader.figshare.com/files/17715740"))
 cri
 
 #tidy up data
-#hpi OK
+#hpi
+happiness$year <- as.character(happiness$year)
+happiness
 
 #GDP needs to be longer
 GDP <- GDP %>%
   select(-'Country Code') %>%
   rename(country = 'Country Name')
 
+#reshape
 GDP <- GDP %>%
   pivot_longer(-country, names_to = "year", values_to = "GDP", values_drop_na = TRUE)
 GDP
+GDP$year <- as.character(GDP$year)
+GDP
+
+#pop
+pop <- pop %>%
+  select(-'Country Code') %>%
+  rename(country = 'Country Name')
 
 
+#reshape
+pop <- pop %>%
+  pivot_longer(-country, names_to = "year", values_to = "pop", values_drop_na = TRUE)
+pop$year <- as.character(pop$year)
+pop
 
+#cri
+cri$year <- as.character(cri$year)
+cri <- cri %>%
+  select(-CRI.rank)
+cri
+
+#now join it all up
+data <- left_join(happiness, GDP, by = c("country", "year"))
+data <- left_join(data, pop, by = c("country", "year"))
+data <- left_join(data, cri, by = c("country", "year"))
+data
 
 ```
 

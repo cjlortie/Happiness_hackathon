@@ -26,5 +26,9 @@ GDP
 pop <- read_csv(url("https://ndownloader.figshare.com/files/17715701"))
 pop
 
+#CRI
+cri <- read_csv(url("https://ndownloader.figshare.com/files/17715740"))
+cri
+
 ```
 

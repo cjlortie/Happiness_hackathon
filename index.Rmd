@@ -10,8 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Happiness hackathon
 cjlortie
 
-![](./mr-robot.jpg)
+![](./mr-robot.jpg)  
 
+### Data
 ```{r data, warning=FALSE, message=FALSE}
 library(tidyverse)
 #happiness
@@ -31,4 +32,18 @@ cri <- read_csv(url("https://ndownloader.figshare.com/files/17715740"))
 cri
 
 ```
+
+
+### Viz
+```{r viz, warning=FALSE, message=FALSE}
+
+```
+
+### Models
+```{r models, warning=FALSE, message=FALSE}
+
+```
+
+### Interpretation 
+
 

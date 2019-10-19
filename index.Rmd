@@ -70,18 +70,94 @@ cri
 data <- left_join(happiness, GDP, by = c("country", "year"))
 data <- left_join(data, pop, by = c("country", "year"))
 data <- left_join(data, cri, by = c("country", "year"))
-data
+summary(data)
+library(skimr)
+skim(data)
+
+summary_data <- data %>%
+  group_by(year) %>%
+  summarise(variance = sd(hpi))
+   
 
 ```
 
 
 ### Viz
 ```{r viz, warning=FALSE, message=FALSE}
+ggplot(data, aes(country, hpi)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_blank())
+
+ggplot(data, aes(hpi, fill = year)) +
+  geom_histogram() +
+  scale_fill_brewer(palette = "Set1")
+
+ggplot(data, aes(GDP, hpi, color = year)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  scale_color_brewer(palette = "Set1")
+
+ggplot(data, aes(log10(GDP), hpi, color = year)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  scale_color_brewer(palette = "Set1")
+
+ggplot(data, aes(pop, hpi, color = year)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  scale_color_brewer(palette = "Set1")
+
+ggplot(data, aes(log10(pop), hpi, color = year)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  scale_color_brewer(palette = "Set1")
+
+ggplot(data, aes(CRI, hpi, color = year)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  scale_color_brewer(palette = "Set1")
+
+ggplot(summary_data, aes(as.numeric(year), variance)) +
+  geom_line()
+
+#map
+require(maps)
+
+#world map skeleton
+world_map <- map_data("world")
+
+#rename to match happiness column name
+map_data <- world_map %>%
+  rename(country = region) 
+
+#join happiness data to map data
+map_data <- left_join(map_data, data, by = "country") 
+
+#ggplot to the rescue
+ggplot(map_data, aes(long, lat, group = group))+
+  geom_polygon(aes(fill = hpi), color = "white") +
+  labs(x = "longitude", y = "latitude", fill = "happiness index")
+
+#require(viridis)
+#ggplot(map_data, aes(long, lat, group = group))+
+  #geom_polygon(aes(fill = hpi), color = "white") +
+  #scale_fill_viridis_c(option = "C")
 
 ```
 
 ### Models
 ```{r models, warning=FALSE, message=FALSE}
+library(emmeans)
+m1 <- glm(hpi~year, data = data)
+anova(m1, test = "Chisq")
+emmeans(m1, pairwise~year)
+
+m2 <- glm(hpi~pop*GDP*year, data = data)
+anova(m2, test = "Chisq")
+emmeans(m2, pairwise~year)
+
+chisq.test(na.omit(data$pop))
+
 
 ```
 
